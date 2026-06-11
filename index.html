@@ -9,27 +9,39 @@ cd ~/ReiAlaricVPN && cat > index.html << 'EOF'
 <style>
 body{
   margin:0;
-  background:black;
+  background:#000;
   color:#00ffcc;
   font-family:Arial;
   text-align:center;
 }
 
-h1{margin-top:80px;}
+h1{
+  margin-top:80px;
+}
 
 button{
   padding:15px 30px;
   border:none;
   border-radius:10px;
-  cursor:pointer;
   font-size:18px;
+  cursor:pointer;
   margin-top:40px;
 }
 
-.on{background:#00ffcc;color:black;}
-.off{background:#ff004c;color:white;}
+.on{
+  background:#00ffcc;
+  color:#000;
+}
 
-p{color:#aaa;margin-top:20px;}
+.off{
+  background:#ff004c;
+  color:#fff;
+}
+
+p{
+  margin-top:20px;
+  color:#aaa;
+}
 </style>
 </head>
 
@@ -43,29 +55,38 @@ p{color:#aaa;margin-top:20px;}
 <p id="net">REDE: carregando...</p>
 
 <script>
-let active=false;
+let active = false;
 
 function toggle(){
-active=!active;
-let b=document.getElementById("btn");
-let s=document.getElementById("status");
+  active = !active;
 
-if(active){
-b.innerText="DESATIVAR VPN";
-b.className="on";
-s.innerText="VPN ATIVADA";
+  const btn = document.getElementById("btn");
+  const status = document.getElementById("status");
+
+  if(active){
+    btn.innerText = "DESATIVAR VPN";
+    btn.className = "on";
+    status.innerText = "VPN ATIVADA";
+  }else{
+    btn.innerText = "ATIVAR VPN";
+    btn.className = "off";
+    status.innerText = "VPN DESATIVADA";
+  }
+}
+
+// rede do navegador (limitado)
+let conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+if(conn){
+  document.getElementById("net").innerText =
+  "REDE: " + (conn.effectiveType || "desconhecida");
 }else{
-b.innerText="ATIVAR VPN";
-b.className="off";
-s.innerText="VPN DESATIVADA";
+  document.getElementById("net").innerText =
+  "REDE: não disponível";
 }
-}
-
-let c=navigator.connection;
-document.getElementById("net").innerText=
-c ? "REDE: "+(c.effectiveType||"desconhecida") : "REDE: não disponível";
 </script>
 
 </body>
 </html>
 EOF
+
