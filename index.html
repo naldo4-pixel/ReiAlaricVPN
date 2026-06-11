@@ -1,0 +1,137 @@
+cat > index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rei Alaric VPN</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #000;
+  color: #00ffcc;
+  text-align: center;
+}
+
+h1 {
+  margin-top: 60px;
+  font-size: 38px;
+  text-shadow: 0 0 10px #00ffcc;
+}
+
+.card {
+  margin-top: 30px;
+  display: inline-block;
+  padding: 20px;
+  border: 1px solid #00ffcc;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #00ffcc33;
+}
+
+.status {
+  margin: 15px 0;
+  font-weight: bold;
+}
+
+.btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.on {
+  background: #00ffcc;
+  color: #000;
+}
+
+.off {
+  background: #ff004c;
+  color: #fff;
+}
+
+.info {
+  margin-top: 20px;
+  color: #aaa;
+}
+</style>
+
+</head>
+<body>
+
+<h1>𓆩 Rei Alaric VPN 𓆪</h1>
+
+<div class="card">
+  <div class="status" id="status">STATUS: OFFLINE</div>
+
+  <button class="btn off" id="btn" onclick="toggle()">
+    ATIVAR VPN
+  </button>
+
+  <div class="info">
+    <p id="battery">Bateria: --</p>
+    <p id="network">Rede: --</p>
+  </div>
+</div>
+
+<script>
+let active = false;
+
+function toggle() {
+  active = !active;
+
+  const status = document.getElementById("status");
+  const btn = document.getElementById("btn");
+
+  if (active) {
+    status.innerText = "STATUS: ONLINE";
+    btn.innerText = "DESATIVAR VPN";
+    btn.className = "btn on";
+  } else {
+    status.innerText = "STATUS: OFFLINE";
+    btn.innerText = "ATIVAR VPN";
+    btn.className = "btn off";
+  }
+}
+
+// BATERIA (se suportado)
+function loadBattery() {
+  if (navigator.getBattery) {
+    navigator.getBattery().then(function(battery) {
+      function update() {
+        document.getElementById("battery").innerText =
+          "Bateria: " + Math.round(battery.level * 100) + "%";
+      }
+      update();
+      battery.addEventListener("levelchange", update);
+    });
+  } else {
+    document.getElementById("battery").innerText =
+      "Bateria: não disponível";
+  }
+}
+
+// REDE
+function loadNetwork() {
+  let conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+  if (conn) {
+    document.getElementById("network").innerText =
+      "Rede: " + (conn.effectiveType || "desconhecida");
+  } else {
+    document.getElementById("network").innerText =
+      "Rede: não disponível";
+  }
+}
+
+loadBattery();
+loadNetwork();
+</script>
+
+</body>
+</html>
+EOF
