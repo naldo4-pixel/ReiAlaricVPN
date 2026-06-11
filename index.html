@@ -9,50 +9,90 @@ cd ~/ReiAlaricVPN && cat > index.html << 'EOF'
 <style>
 body{
   margin:0;
-  background:#000;
+  background: radial-gradient(circle, #001a1a, #000);
   color:#00ffcc;
   font-family:Arial;
   text-align:center;
 }
 
+/* topo */
 h1{
-  margin-top:80px;
+  margin-top:70px;
+  font-size:32px;
+  text-shadow:0 0 20px #00ffcc;
 }
 
-button{
-  padding:15px 30px;
-  border:none;
-  border-radius:10px;
-  font-size:18px;
-  cursor:pointer;
+/* card */
+.card{
   margin-top:40px;
+  display:inline-block;
+  padding:25px;
+  border:1px solid #00ffcc;
+  border-radius:15px;
+  box-shadow:0 0 30px #00ffcc33;
+}
+
+/* botão */
+button{
+  margin-top:20px;
+  padding:15px 40px;
+  font-size:18px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.3s;
 }
 
 .on{
   background:#00ffcc;
   color:#000;
+  box-shadow:0 0 20px #00ffcc;
 }
 
 .off{
   background:#ff004c;
   color:#fff;
+  box-shadow:0 0 20px #ff004c;
 }
 
-p{
-  margin-top:20px;
+/* status */
+.status{
+  margin-top:15px;
+  font-weight:bold;
+}
+
+/* rede */
+.net{
+  margin-top:10px;
   color:#aaa;
+  font-size:14px;
+}
+
+/* animação */
+.glow{
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  0%{text-shadow:0 0 5px #00ffcc;}
+  50%{text-shadow:0 0 25px #00ffcc;}
+  100%{text-shadow:0 0 5px #00ffcc;}
 }
 </style>
 </head>
 
 <body>
 
-<h1>𓆩 Rei Alaric VPN 𓆪</h1>
+<h1 class="glow">𓆩 Rei Alaric VPN 𓆪</h1>
+
+<div class="card">
 
 <button id="btn" class="off" onclick="toggle()">ATIVAR VPN</button>
 
-<p id="status">VPN DESATIVADA</p>
-<p id="net">REDE: carregando...</p>
+<div class="status" id="status">🔴 DESATIVADA</div>
+<div class="net" id="net">REDE: carregando...</div>
+
+</div>
 
 <script>
 let active = false;
@@ -60,33 +100,27 @@ let active = false;
 function toggle(){
   active = !active;
 
-  const btn = document.getElementById("btn");
-  const status = document.getElementById("status");
+  let btn = document.getElementById("btn");
+  let status = document.getElementById("status");
 
   if(active){
     btn.innerText = "DESATIVAR VPN";
     btn.className = "on";
-    status.innerText = "VPN ATIVADA";
+    status.innerText = "🟢 VPN ATIVADA";
   }else{
     btn.innerText = "ATIVAR VPN";
     btn.className = "off";
-    status.innerText = "VPN DESATIVADA";
+    status.innerText = "🔴 VPN DESATIVADA";
   }
 }
 
-// rede do navegador (limitado)
+// rede (limitado navegador)
 let conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
-if(conn){
-  document.getElementById("net").innerText =
-  "REDE: " + (conn.effectiveType || "desconhecida");
-}else{
-  document.getElementById("net").innerText =
-  "REDE: não disponível";
-}
+document.getElementById("net").innerText =
+conn ? "REDE: " + (conn.effectiveType || "desconhecida") : "REDE: não disponível";
 </script>
 
 </body>
 </html>
 EOF
-
