@@ -1,0 +1,96 @@
+cd ~/ReiAlaricVPN
+cat > index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rei Alaric VPN</title>
+
+<style>
+body{
+  margin:0;
+  background:black;
+  color:#00ffcc;
+  font-family:Arial;
+  text-align:center;
+}
+
+h1{
+  margin-top:80px;
+}
+
+button{
+  padding:15px 30px;
+  font-size:18px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  margin-top:30px;
+}
+
+.on{
+  background:#00ffcc;
+  color:black;
+}
+
+.off{
+  background:#ff004c;
+  color:white;
+}
+
+p{
+  margin-top:20px;
+  color:#aaa;
+}
+</style>
+</head>
+
+<body>
+
+<h1>𓆩 Rei Alaric VPN 𓆪</h1>
+
+<button id="btn" class="off" onclick="toggle()">ATIVAR VPN</button>
+
+<p id="status">VPN DESATIVADA</p>
+<p id="network">REDE: carregando...</p>
+
+<script>
+let active = false;
+
+function toggle(){
+  active = !active;
+
+  const btn = document.getElementById("btn");
+  const status = document.getElementById("status");
+
+  if(active){
+    btn.innerText = "DESATIVAR VPN";
+    btn.className = "on";
+    status.innerText = "VPN ATIVADA";
+  }else{
+    btn.innerText = "ATIVAR VPN";
+    btn.className = "off";
+    status.innerText = "VPN DESATIVADA";
+  }
+}
+
+// REDE DO CELULAR
+function network(){
+  let conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+  if(conn){
+    document.getElementById("network").innerText =
+      "REDE: " + (conn.effectiveType || "desconhecida");
+  }else{
+    document.getElementById("network").innerText =
+      "REDE: não disponível";
+  }
+}
+
+network();
+</script>
+
+</body>
+</html>
+EOF
