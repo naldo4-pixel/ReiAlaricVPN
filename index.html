@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rei Alaric VPN</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#000;
+color:#fff;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.box{
+width:340px;
+background:#111;
+padding:20px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 0 20px #00ffcc;
+}
+
+h1{
+color:#00ffcc;
+}
+
+button{
+width:220px;
+height:55px;
+font-size:20px;
+border:none;
+border-radius:10px;
+background:#00ffcc;
+cursor:pointer;
+}
+
+#status{
+font-size:22px;
+margin:20px;
+color:red;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h1>👑 Rei Alaric VPN</h1>
+
+<div id="status">
+● DESCONECTADA
+</div>
+
+<button onclick="vpn()"
+id="botao">
+ATIVAR
+</button>
+
+<p id="tempo">
+Tempo: 00:00:00
+</p>
+
+</div>
+
+<script>
+
+let ligada=false;
+let segundos=0;
+let timer;
+
+function atualizar(){
+
+segundos++;
+
+let h=Math.floor(segundos/3600);
+let m=Math.floor((segundos%3600)/60);
+let s=segundos%60;
+
+document.getElementById("tempo").innerHTML=
+"Tempo: "+
+String(h).padStart(2,"0")+":"+
+String(m).padStart(2,"0")+":"+
+String(s).padStart(2,"0");
+
+}
+
+function vpn(){
+
+ligada=!ligada;
+
+if(ligada){
+
+document.getElementById("status").innerHTML="● CONECTADA";
+document.getElementById("status").style.color="lime";
+
+document.getElementById("botao").innerHTML="DESATIVAR";
+
+segundos=0;
+
+timer=setInterval(atualizar,1000);
+
+}else{
+
+document.getElementById("status").innerHTML="● DESCONECTADA";
+document.getElementById("status").style.color="red";
+
+document.getElementById("botao").innerHTML="ATIVAR";
+
+clearInterval(timer);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
